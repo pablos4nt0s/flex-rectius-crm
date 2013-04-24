@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:GridItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" 
+					clipAndEnableScrolling="true">
+	
+	<fx:Script>
+		<![CDATA[
+
+			override public function set data(value:Object):void
+			{
+				super.data = value;
+				if(data)
+				{
+					rect.percentWidth = data[column.dataField];
+					lblData.text = data[column.dataField] + "%";
+				}
+			}
+		]]>
+	</fx:Script>
+	
+	<s:Rect top="5" bottom="5" left="5" right="5">
+		<s:fill>
+			<s:SolidColor color="0x585858" />
+		</s:fill>
+	</s:Rect>
+	
+	<s:Rect id="rect" top="5" bottom="5" left="5" right="5">
+		<s:fill>
+			<s:SolidColor color="0x909090" />
+		</s:fill>
+	</s:Rect>
+	
+	<s:Label id="lblData" verticalCenter="0" horizontalCenter="0" color="0xf3f3f3" />
+	
+</s:GridItemRenderer>

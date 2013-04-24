@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:GridItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" 
+					clipAndEnableScrolling="true">
+	
+	<fx:Script>
+		<![CDATA[
+			
+			[Embed(source="br/com/rectius/crm/assets/images/icon_edit.png")] 
+			[Bindable] 
+			public var imgEdit:Class;
+			
+			[Embed(source="br/com/rectius/crm/assets/images/icon_remove.gif")] 
+			[Bindable] 
+			public var imgRemove:Class;
+			
+		]]>
+	</fx:Script>
+	
+	<s:HGroup width="100%" height="100%" verticalAlign="middle" horizontalAlign="center">
+		<s:Image id="iconEdit" source="{imgEdit}" buttonMode="true" 
+				 click="dispatchEvent(new Event('editEvent', true));" />
+		<s:Image id="iconRemove" source="{imgRemove}" buttonMode="true" 
+				 click="dispatchEvent(new Event('removeEvent', true));" />
+	</s:HGroup>
+	
+	
+</s:GridItemRenderer>

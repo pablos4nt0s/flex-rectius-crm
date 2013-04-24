@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<components:PopupGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 xmlns:components="br.com.rectius.crm.view.components.*"
+		 xmlns:form="br.com.rectius.library.form.*"
+		 showEffect="{moveLeft}"
+		 width="456" height="675"
+		 >
+	
+	<fx:Script>
+		<![CDATA[
+			import br.com.rectius.crm.model.domain.Cliente;
+			import br.com.rectius.crm.model.presentation.ClientePresentationModel;
+			import br.com.rectius.library.notificator.NotificatorManager;
+			
+			import mx.managers.PopUpManager;
+			
+			[Bindable]
+			[Inject]
+			public var model:ClientePresentationModel;
+			
+			protected function salvar_clickHandler(event:MouseEvent):void
+			{
+				this.formValidator.validateForm(event);
+				if(formValidator.formIsValid)
+				{
+					var cliente:Cliente = new Cliente();
+					cliente.razaoSocial = txtNomeRazao.text;
+					cliente.nome = txtNomeFantasia.text;
+					cliente.identificacao = txtIdentificacao.text;
+					cliente.email = txtEmail.text;
+					cliente.status = ddlStatus.selectedItem.data;
+					
+					model.save(cliente);
+					
+					fechar();
+				}
+				else {
+					NotificatorManager.show("Por favor, preencha todos os campos obrigatórios");
+				}
+			}
+			
+			
+			protected function cancelar_clickHandler(event:MouseEvent):void
+			{
+				fechar();				
+			}
+			
+			private function fechar():void
+			{
+				moveRight.play([this]);
+			}
+			
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<s:Move id="moveLeft" 
+				xFrom="{this.parentApplication.width}" 
+				xTo="{this.parentApplication.width-this.width}" 
+				duration="200" />
+		<s:Move id="moveRight" 
+				xTo="{this.parentApplication.width}" 
+				xFrom="{this.parentApplication.width-this.width}" 
+				duration="200" effectEnd="PopUpManager.removePopUp(this);"/>
+		
+		<fx:Array id="validators">
+			<s:NumberValidator source="{ddlStatus}" property="selectedIndex" minValue="0" required="true" />
+			<mx:StringValidator source="{txtNomeRazao}" property="text" minLength="1" required="true" />
+			<mx:StringValidator source="{txtNomeFantasia}" property="text" minLength="1" required="true" />
+			<mx:StringValidator source="{txtIdentificacao}" property="text" minLength="1" required="true" />
+		</fx:Array>
+		<form:FormValidator id="formValidator" validators="{this.validators}"/>
+	</fx:Declarations>
+	
+	<s:Rect width="100%" height="100%">
+		<s:fill>
+			<s:SolidColor color="#F7F7F7" />
+		</s:fill>
+	</s:Rect>
+	
+	<s:Label styleName="tituloSecao"
+			 horizontalCenter="0" top="20"
+			 text="Adicionar novo cliente" />
+	
+	<s:Form left="15" right="15" top="60" bottom="20">
+		<s:FormItem width="100%" label="Status" required="true">
+			<components:CustomDropdownStatus id="ddlStatus"
+											  width="150"
+											  selectedIndex="0" />
+		</s:FormItem>
+		<s:FormItem width="100%" label="Razão Social" required="true">
+			<s:TextInput id="txtNomeRazao" width="100%" />
+		</s:FormItem>
+		<s:FormItem width="100%" label="Nome Fantasia" required="true">
+			<s:TextInput id="txtNomeFantasia" width="100%" />
+		</s:FormItem>
+		<s:FormItem width="100%" label="Identificação" required="true">
+			<s:TextInput id="txtIdentificacao" width="100%" />
+		</s:FormItem>
+		<s:FormItem width="100%" label="Email">
+			<s:TextInput id="txtEmail" width="100%" />
+		</s:FormItem>
+	</s:Form>
+	
+	<s:HGroup bottom="15" horizontalCenter="0">
+		<s:Button bottom="20" right="20" buttonMode="true" useHandCursor="true"
+				  styleName="cancelButton" label="cancelar"
+				  click="cancelar_clickHandler(event)"/>
+		<s:Button bottom="20" left="20" buttonMode="true" useHandCursor="true"
+				  styleName="actionButton" label="salvar" 
+				  click="salvar_clickHandler(event)" />
+	</s:HGroup>
+	
+	
+</components:PopupGroup>

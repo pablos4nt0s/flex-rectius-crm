@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<fxpProperties abbreviated="false" authoringTool="Flex Builder" compiles="true" parentProject="fc1f0b54-7beb-4659-8ab3-3162171a8535" projectUUID="fc1f0b54-7beb-4659-8ab3-3162171a8535" pureCatalystProject="false" sdkVersion="4.6.0" uuid="06bd66b3-d23c-4fac-a9b8-14773d65018b" version="15">
+  <projects/>
+  <src/>
+  <swc>
+    <linked location="sdkPlaceHolder" path="sdkPlaceHolder" position="0" uuid="06bd66b3-d23c-4fac-a9b8-14773d65018b"/>
+    <linked location="C:/Users/pablo_souza/Adobe Flash Builder 4.5/RectiusCRM/libs" path="/libs" position="1" uuid="608ce56d-69f6-4483-b5bf-eee5222d1ec0"/>
+  </swc>
+  <misc/>
+  <theme/>
+  <mxmlFormattingPrefs groupAttributesByState="true" maxLineWidth="100" mxmlAlignAttributes="true" mxmlAttributeOrder="id,userLabel,includeIn,excludeFrom,visible,x,y,z,left,right,top,bottom,width,height,minWidth,minHeight,maxWidth,maxHeight,label" mxmlKeepAttributeValuesOrganized="true"/>
+</fxpProperties>

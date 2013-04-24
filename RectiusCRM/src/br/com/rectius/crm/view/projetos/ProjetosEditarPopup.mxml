@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<components:PopupGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 xmlns:components="br.com.rectius.crm.view.components.*"
+		 xmlns:form="br.com.rectius.library.form.*"
+		 showEffect="{moveLeft}"
+		 width="510" height="670"
+		 >
+	
+	<fx:Script>
+		<![CDATA[
+			import br.com.rectius.crm.model.domain.Cliente;
+			import br.com.rectius.crm.model.domain.Projeto;
+			import br.com.rectius.crm.model.presentation.ProjetoPresentationModel;
+			import br.com.rectius.library.notificator.NotificatorManager;
+			
+			import mx.collections.ArrayCollection;
+			import mx.events.CalendarLayoutChangeEvent;
+			import mx.managers.PopUpManager;
+			
+			[Bindable]
+			[Inject]
+			public var model:ProjetoPresentationModel;
+			
+			 [Bindable]
+			[Inject( source="clientePresentationModel.arrClientes", bind="true" )]
+			public var arrClientes:ArrayCollection; 
+			
+			protected function salvar_clickHandler(event:MouseEvent):void
+			{
+				this.formValidator.validateForm(event);
+				if(formValidator.formIsValid)
+				{
+					var projeto:Projeto = model.projetoSelecionado;
+					projeto.tipo = ddlTipo.selectedItem.data;
+					projeto.nome = txtNomeProjeto.text;
+					projeto.cliente = Cliente(ddlCliente.selectedItem);
+					projeto.inicio = dtInicio.selectedDate;
+					projeto.termino = dtTermino.selectedDate;
+					projeto.horasEstimadas = horasEstimadas.value;
+					projeto.horasRealizadas = horasRealizadas.value;
+					projeto.status = ddlStatus.selectedItem.data;
+					projeto.contrato.valor = Number(txtValorTotal.text.replace('.','').replace(',','.'));
+					
+					model.update(projeto);
+					
+					fechar();
+				}
+				else {
+					NotificatorManager.show("Por favor, preencha todos os campos obrigatórios");
+				}
+			}
+			
+			protected function cancelar_clickHandler(event:MouseEvent):void
+			{
+				fechar();				
+			}
+			
+			private function fechar():void
+			{
+				moveRight.play([this]);
+			}
+			
+			protected function dtInicio_changeHandler(event:CalendarLayoutChangeEvent):void
+			{
+				dtTermino.selectedDate = null;
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<s:Move id="moveLeft" 
+				xFrom="{this.parentApplication.width}" 
+				xTo="{this.parentApplication.width-this.width}" 
+				duration="200" />
+		<s:Move id="moveRight" 
+				xTo="{this.parentApplication.width}" 
+				xFrom="{this.parentApplication.width-this.width}" 
+				duration="200" effectEnd="PopUpManager.removePopUp(this);"/>
+		
+		<s:NumberFormatter id="currencyFormatter"
+							 decimalSeparator="," 
+							 groupingSeparator="." />
+		
+		<fx:Array id="validators">			
+			<s:NumberValidator source="{ddlTipo}" property="selectedIndex" minValue="0" required="true" />
+			<s:NumberValidator source="{ddlStatus}" property="selectedIndex" minValue="0" required="true" />
+			<s:NumberValidator source="{ddlCliente}" property="selectedIndex" minValue="0" required="true" />
+			<mx:StringValidator source="{txtNomeProjeto}" property="text" minLength="1" required="true" />
+		</fx:Array>
+		<form:FormValidator id="formValidator" validators="{this.validators}"/>
+		
+	</fx:Declarations>
+	
+	<s:Rect width="100%" height="100%">
+		<s:fill>
+			<s:SolidColor color="#F7F7F7" />
+		</s:fill>
+	</s:Rect>
+	
+	<s:Label styleName="tituloSecao"
+			 horizontalCenter="0" top="20"
+			 text="Editar projeto {model.projetoSelecionado.nomeCliente}" />
+	
+	<s:Scroller left="15" right="15" top="60" bottom="20">
+		
+		<s:VGroup width="100%" height="100%">
+			
+			<s:Form width="100%" height="100%">
+				<s:FormItem width="100%" label="Status" required="true">
+					<components:ProjetoDropdownStatus id="ddlStatus"
+													  width="150"
+													  selectedItem="{model.projetoSelecionado.status}"/>
+				</s:FormItem>
+				<s:FormItem width="100%" label="Tipo do Projeto" required="true">
+					<components:ProjetoDropdownTipo id="ddlTipo"
+													  width="150"
+													  selectedItem="{model.projetoSelecionado.tipo}"/>
+				</s:FormItem>
+				<s:FormItem width="100%" label="Nome do Projeto" required="true">
+					<s:TextInput id="txtNomeProjeto" width="100%" text="{model.projetoSelecionado.nome}" />
+				</s:FormItem>
+				<s:FormItem width="100%" label="Nome do Cliente" required="true">
+					<form:DropDownListSelector id="ddlCliente" width="100%"
+											   dataProvider="{arrClientes}"
+											   dataField="id"
+											   labelField="nome"
+											   selectedItem="{model.projetoSelecionado.cliente}" />
+				</s:FormItem>
+				<s:FormItem width="100%">
+					<s:layout>
+						<s:HorizontalLayout gap="20" horizontalAlign="left" />
+					</s:layout>
+					<s:Label text="Início" />
+					<components:CustomDateField id="dtInicio" change="dtInicio_changeHandler(event)"
+												selectedDate="{model.projetoSelecionado.inicio}" />
+					<s:Spacer width="100%" />
+					<s:Label text="Término" />
+					<components:CustomDateField id="dtTermino"
+												selectedDate="{model.projetoSelecionado.termino}"
+												selectableRange="{{rangeStart: dtInicio.selectedDate}}" />
+				</s:FormItem>
+				<s:FormItem width="100%">
+					<s:layout>
+						<s:HorizontalLayout gap="20" horizontalAlign="left" />
+					</s:layout>
+					<s:Label text="Horas Realizadas" />
+					<s:NumericStepper id="horasRealizadas" width="70" 
+									  value="{model.projetoSelecionado.horasRealizadas}" 
+									  minimum="0" maxChars="7" maximum="9999999" />
+					<s:Spacer width="100%" />
+					<s:Label text="Estimadas" />
+					<s:NumericStepper id="horasEstimadas" width="70" 
+									  value="{model.projetoSelecionado.horasEstimadas}"
+									  minimum="0" maxChars="7" maximum="9999999" />
+				</s:FormItem>
+				
+				<s:FormItem width="100%">
+					<s:layout>
+						<s:HorizontalLayout gap="20" horizontalAlign="left" />
+					</s:layout>
+					<s:Label text="Valor Total" />
+					<form:TextInputCurrency id="txtValorTotal" width="100" 
+											text="{currencyFormatter.format(model.projetoSelecionado.contrato.valor)}" />
+					<s:Spacer width="100%" />
+					<s:Label text="Parcelas" />
+					<s:NumericStepper id="numParcelas" 
+									  minimum="1" maximum="99" maxChars="2" /> 
+				</s:FormItem>
+			</s:Form>
+			
+			<s:Spacer height="10" />
+	
+			<s:HGroup width="100%" height="100%" horizontalAlign="center">
+				<s:Button bottom="20" right="20" 
+						  buttonMode="true" useHandCursor="true"
+						  styleName="cancelButton" label="cancelar"
+						  click="cancelar_clickHandler(event)"/>
+				<s:Button bottom="20" left="20" 
+						  buttonMode="true" useHandCursor="true"
+						  styleName="actionButton" label="salvar"
+						  click="salvar_clickHandler(event)" />
+			</s:HGroup>
+	
+		</s:VGroup>
+	
+	</s:Scroller>
+	
+</components:PopupGroup>

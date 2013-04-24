@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Panel xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 skinClass="br.com.rectius.crm.assets.skins.CustomTitleWindowSkin"
+		 initialize="username.setFocus();"
+		 width="300" height="220">
+	
+	<fx:Script>
+		<![CDATA[
+			import br.com.rectius.crm.model.presentation.LoginPresentationModel;
+			import br.com.rectius.crm.model.presentation.MainPresentationModel;
+			
+			import mx.events.FlexEvent;
+			
+			[Bindable]
+			[Inject]
+			public var model:LoginPresentationModel;
+			
+			[Bindable]
+			[Inject]
+			public var mainModel:MainPresentationModel;
+			
+			protected function login_clickHandler(event:Event):void
+			{
+				model.login(username.text, password.text);
+			}
+
+			protected function netId_enterHandler(event:FlexEvent):void
+			{
+				password.setFocus();
+			}
+
+		]]>
+	</fx:Script>
+	
+	<s:Form width="100%" height="100%">
+		<s:layout> 
+			<s:FormLayout gap="-14" paddingLeft="25"/> 
+		</s:layout>      
+		<s:FormItem label="Usuário">
+			<s:TextInput id="username" width="160" text="{mainModel.lastUsername}"
+						 enter="netId_enterHandler(event)" />
+		</s:FormItem>
+		<s:FormItem label="Senha">
+			<s:TextInput id="password" text="admin"
+						 enter="login_clickHandler(event)"
+						 width="160" displayAsPassword="true" />
+		</s:FormItem>
+		<s:FormItem>
+			<s:Button id="login" label="Entrar" click="login_clickHandler(event)" />
+		</s:FormItem>
+	</s:Form>
+	
+</s:Panel>

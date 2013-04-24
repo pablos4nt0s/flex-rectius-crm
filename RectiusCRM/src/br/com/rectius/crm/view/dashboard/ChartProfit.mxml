@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<components:Pod xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx" 
+				xmlns:components="br.com.rectius.crm.view.components.*"
+				creationComplete="creationCompleteHandler(event)">
+	
+	<fx:Script>
+		<![CDATA[
+			import br.com.rectius.crm.model.presentation.ProjetoPresentationModel;
+			
+			import mx.events.FlexEvent;
+			
+			[Bindable]
+			[Inject]
+			public var model:ProjetoPresentationModel;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				model.listGraficoQuantidedadeStatus();
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+
+		<fx:Array id="bge">
+			<mx:GridLines gridDirection="both"/>
+		</fx:Array>
+		
+		<!-- Define chart effects -->
+		<mx:SeriesSlide 
+			id="slideIn" 
+			duration="1000" 
+			direction="up"
+			/>
+		
+	</fx:Declarations>
+	
+	<mx:ColumnChart id="myChart" width="100%" height="100%"
+					showDataTips="true" resizeEffect="Resize"
+					dataProvider="{model.arrGraficoQtdeStatus}" 
+					backgroundElements="{bge}">
+		<mx:horizontalAxis>
+			<mx:CategoryAxis categoryField="status" />
+		</mx:horizontalAxis>
+		<mx:series>
+			<mx:ColumnSeries 
+				xField="status" 
+				yField="quantidade" 
+				displayName="Horas Estimadas"
+				showDataEffect="{slideIn}"/>
+			<!--<mx:ColumnSeries 
+				xField="nome" 
+				yField="horasRealizadas" 
+				displayName="Horas Realizadas"
+				showDataEffect="{slideIn}"/>-->
+		</mx:series>
+	</mx:ColumnChart>
+	
+</components:Pod>

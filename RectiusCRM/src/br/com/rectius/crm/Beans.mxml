@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<swiz:BeanProvider 
+	xmlns:fx="http://ns.adobe.com/mxml/2009"
+	xmlns:s="library://ns.adobe.com/flex/spark"
+	xmlns:swiz="http://swiz.swizframework.org" 
+	xmlns:controller="br.com.rectius.crm.controller.*" 
+	xmlns:storage="org.swizframework.storage.*" 
+	xmlns:service="br.com.rectius.crm.service.*" 
+	> 
+	
+	<fx:Script>
+		<![CDATA[
+			import br.com.rectius.crm.model.presentation.ClientePresentationModel;
+			import br.com.rectius.crm.model.presentation.LoginPresentationModel;
+			import br.com.rectius.crm.model.presentation.MainPresentationModel;
+			import br.com.rectius.crm.model.presentation.ProjetoPresentationModel;
+			
+			[Bindable]
+			//public static var SERVLET_PATH:String = "http://web.rectius.com.br/RectiusCRM";
+			public static var SERVLET_PATH:String = "http://localhost:8080/RectiusCRM";  
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		
+		<!--CONTROLLERS-->
+		
+		<controller:ApplicationController />
+		<controller:ProjetoController />
+		<controller:ClienteController />
+		
+		
+		<!--PRESENTATION MODELS-->
+		
+		<swiz:Prototype id="loginPresentationModel" type="{LoginPresentationModel}" singleton="true" />
+		<swiz:Prototype id="mainPresentationModel" type="{MainPresentationModel}" singleton="true" />
+		<swiz:Prototype id="projetoPresentationModel" type="{ProjetoPresentationModel}" singleton="true" />
+		<swiz:Prototype id="clientePresentationModel" type="{ClientePresentationModel}" singleton="true" />
+		
+		
+		<!--REMOTE OBJECTS-->
+		
+		<s:ChannelSet>
+			<s:channels>
+				<s:AMFChannel id="myAmf" uri="{SERVLET_PATH}" />
+			</s:channels>
+		</s:ChannelSet>
+		
+		<s:RemoteObject id="loginService" destination="loginService" showBusyCursor="true" endpoint="{SERVLET_PATH}/messagebroker/amf" />
+		<s:RemoteObject id="projetoService" destination="projetoService" showBusyCursor="true" endpoint="{SERVLET_PATH}/messagebroker/amf" />
+		<s:RemoteObject id="clienteService" destination="clienteService" showBusyCursor="true" endpoint="{SERVLET_PATH}/messagebroker/amf" />
+		
+		
+		<!--DELEGATES-->
+		
+		<service:LoginDelegate />
+		<service:ProjetoDelegate />
+		<service:ClienteDelegate />
+		
+		
+		<!--GENERAL-->
+		
+		<swiz:ServiceHelper id="serviceHelper" />
+		<storage:SharedObjectBean name="so" />
+		
+		
+	</fx:Declarations>
+	
+</swiz:BeanProvider>

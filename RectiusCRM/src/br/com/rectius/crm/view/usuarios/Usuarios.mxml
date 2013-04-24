@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<components:NavigatorContentAnimated 
+					xmlns:components="br.com.rectius.crm.view.components.*"
+					xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" 
+					xmlns:menu="br.com.rectius.crm.view.menu.*"
+					width="100%" height="100%"
+					label="Usuários" 
+					icon="@Embed('br/com/rectius/crm/assets/images/menu_usuarios.png')"
+					contentCreationComplete="initializeHandler(event)"
+					show="showHandler(event)" xmlns:collapsecontainer="br.com.rectius.library.collapsecontainer.*"
+					>
+	
+	<fx:Script>
+		<![CDATA[
+			import br.com.rectius.crm.model.domain.Cliente;
+			import br.com.rectius.crm.model.presentation.ClientePresentationModel;
+			import br.com.rectius.crm.view.cliente.ClientesEditarPopup;
+			import br.com.rectius.crm.view.cliente.ClientesNovoPopup;
+			import br.com.rectius.crm.view.components.DataGridLabelFunctions;
+			
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.managers.PopUpManager;
+			
+			[Bindable]
+			[Inject]
+			public var model:ClientePresentationModel;
+			
+			[Bindable] 
+			private var popupProjetos:ClientesNovoPopup;
+			
+			[Bindable] 
+			private var popupProjetosEditar:ClientesEditarPopup;
+			
+			
+			protected function initializeHandler(event:FlexEvent):void
+			{
+				//grid.addEventListener("editEvent", editarEventHandler);
+				//grid.addEventListener("removeEvent", deleteEventHandler);
+			}
+			
+			protected function showHandler(event:FlexEvent):void
+			{
+				updateList();
+			}
+			
+			private function updateList():void
+			{
+				model.list();
+			}
+			
+			protected function adicionar_clickHandler(event:MouseEvent):void
+			{
+				popupProjetos = PopUpManager.createPopUp(this, ClientesNovoPopup, true) as ClientesNovoPopup;
+				popupProjetos.y = 50;
+			}
+			
+			protected function editarEventHandler(event:Event):void
+			{
+				/* if(grid.selectedItem)
+				{
+					editarHandler(Cliente(grid.selectedItem));
+				} */
+			}
+			
+			protected function grid_doubleClickHandler(event:MouseEvent):void
+			{
+				/* if(grid.selectedItem)
+				{
+					editarHandler(Cliente(grid.selectedItem));	
+				} */
+			}
+			
+			private function editarHandler(p:Cliente):void
+			{
+				popupProjetosEditar = PopUpManager.createPopUp(this, ClientesEditarPopup, true) as ClientesEditarPopup;
+				popupProjetosEditar.y = 50;
+				
+				model.clienteSelecionado = p;
+			}
+			
+			protected function deleteEventHandler(event:Event):void
+			{
+				/* Alert.show("Você realmente deseja excluir?", "Confirmação",
+					Alert.YES | Alert.NO, this, 
+					function(event:CloseEvent):void {
+						if(event.detail == Alert.YES) 
+						{
+							model.remove(Cliente(grid.selectedItem));
+						}
+					}, 
+					null, Alert.OK ); */				
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<s:DateTimeFormatter id="dateFormat" dateTimePattern="dd/MM/yyyy"/>
+		<s:NumberFormatter id="currencyFormatter"
+						   decimalSeparator="," 
+						   groupingSeparator="." />
+	</fx:Declarations>
+	
+	
+	<collapsecontainer:CollapseContainer
+		left="5" right="5" top="106" height="467">
+		
+		<s:Button id="alternateMode" />
+		
+		<collapsecontainer:expandedContainerChildren>
+			<s:Group id="expandedContainerGroup">
+				
+			</s:Group>
+		</collapsecontainer:expandedContainerChildren>
+		
+		<collapsecontainer:collapsedContainerChildren>
+			<s:Group id="collapsedContainerGroup">
+				
+			</s:Group>
+		</collapsecontainer:collapsedContainerChildren>
+		
+	</collapsecontainer:CollapseContainer>
+	
+	
+	<!--<s:Group left="0" right="0" top="20" height="80">
+		<s:Rect width="100%" height="100%">
+			<s:fill>
+				<s:SolidColor color="#F3F3F3" />
+			</s:fill>
+		</s:Rect>
+		
+		<s:Label left="33" verticalCenter="-10" text="CLIENTES" styleName="tituloSecao" />
+		<s:Label left="33" verticalCenter="15" text="cadastro e gerenciamento de clientes..." styleName="descricaoSecao" />
+		
+		
+		<s:Button right="15" verticalCenter="0" 
+				  styleName="actionButton" label="adicionar"
+				  useHandCursor="true" buttonMode="true"
+				  click="adicionar_clickHandler(event)"/>
+		
+	</s:Group>
+	
+	<s:Group left="5" right="5" top="106" height="467">
+		
+		<s:DataGrid id="grid" left="0" right="0" top="0" height="100%"
+					dataProvider="{model.arrClientes}"
+					doubleClickEnabled="true" doubleClick="grid_doubleClickHandler(event)"
+					skinClass="br.com.rectius.crm.assets.skins.CustomDataGridSkin">
+			<s:columns>
+				<s:ArrayList>
+					<s:GridColumn width="60" itemRenderer="br.com.rectius.crm.view.components.itemrenderer.GridColumnActions" />
+					<s:GridColumn width="150" headerText="Identificação" dataField="identificacao" />
+					<s:GridColumn headerText="Nome" dataField="nome" />
+					<s:GridColumn headerText="E-mail" dataField="email" />
+					<s:GridColumn width="100" headerText="Status" dataField="status" labelFunction="{DataGridLabelFunctions.statusLabelFunction}" />
+				</s:ArrayList>
+			</s:columns>
+		</s:DataGrid>
+		
+	</s:Group>-->
+	
+</components:NavigatorContentAnimated>

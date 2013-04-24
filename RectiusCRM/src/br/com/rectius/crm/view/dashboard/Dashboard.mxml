@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" 
+					xmlns:components="br.com.rectius.library.pod.components.*" 
+					xmlns:dashboard="br.com.rectius.crm.view.dashboard.*"
+					show="creationCompleteHandler(event)" 
+					xmlns:components1="br.com.rectius.crm.view.components.*" 
+					width="100%" height="100%" 
+					>
+	<fx:Script>
+		<![CDATA[
+			import br.com.rectius.crm.model.presentation.ClientePresentationModel;
+			import br.com.rectius.crm.model.presentation.ProjetoPresentationModel;
+			
+			import mx.events.FlexEvent;
+			import mx.messaging.messages.AsyncMessage;
+			import mx.messaging.messages.IMessage;
+			
+			[Bindable]
+			[Inject]
+			public var model:ProjetoPresentationModel;
+			
+			[Bindable]
+			[Inject]
+			public var modelCliente:ClientePresentationModel;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				model.list();
+				modelCliente.list();
+				
+				consumer.subscribe();
+			}
+			
+			
+			private function messageHandler(message:IMessage):void
+			{
+				if(message.headers.hasOwnProperty("chat"))
+					lblMessage.text += '\n' + message.body.toString();
+			}
+			
+			protected function enviar_clickHandler(event:MouseEvent):void
+			{
+				var msg:AsyncMessage = new AsyncMessage();
+				msg.headers["chat"] = "dashboard";
+				msg.body = txtMessage.text;
+				producer.send(msg);
+				txtMessage.text = "";
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		
+		<s:Producer id="producer" 
+					destination="contactsMessaging"
+					channelSet="{cs}" />
+		
+		<s:Consumer id="consumer" 
+					destination="contactsMessaging" 
+					message="messageHandler(event.message)"
+					
+					channelSet="{cs}" />
+		
+		<mx:ChannelSet id="cs">
+			<mx:AMFChannel url="/RectiusCRM/messagebroker/amfpolling"/>    
+		</mx:ChannelSet>    
+		
+	</fx:Declarations>
+	
+	<s:Group left="0" right="0" top="0" height="30" clipAndEnableScrolling="true">
+		<s:Rect left="0" right="0" top="0" bottom="0">
+			<s:fill>
+				<s:LinearGradient rotation="90">
+					<s:GradientEntry color="#858585" ratio=".2" />
+					<s:GradientEntry color="#676767"  />
+				</s:LinearGradient>
+			</s:fill>
+		</s:Rect>
+		<s:List id="podMinimizedList" verticalCenter="0"
+				skinClass="br.com.rectius.crm.assets.skins.PodListMinimizedSkin"
+				itemRenderer="br.com.rectius.crm.view.components.itemrenderer.PodListItemRenderer" 
+				dataProvider="{podManager.minimizedPods}">
+			<s:layout>
+				<s:HorizontalLayout 
+					paddingBottom="3" paddingLeft="2" 
+					paddingTop="3" paddingRight="2" />
+			</s:layout>
+		</s:List>
+	</s:Group>
+	
+	<components:PodManager id="podManager"
+						   skinClass="br.com.rectius.crm.assets.skins.PodManagerVerticalSkin"   
+						   left="10" right="10" top="40" bottom="15">
+		
+		<components:firstElements>
+			<dashboard:ChartExpenses width="100%" height="100%" title="Horas" />
+			<dashboard:ChartProfit width="100%" height="100%" title=""/>
+		</components:firstElements>
+		
+		<components:secondElements>
+			<dashboard:ChartWidget width="100%" height="100%" title="" />
+			<components1:Pod width="100%" height="100%">
+				<s:TextArea id="lblMessage" left="20" right="20" top="20" bottom="50" />
+				<s:HGroup left="20" bottom="5" right="20" horizontalAlign="right">
+					<s:TextInput id="txtMessage" width="100%" />
+					<s:Button label="Limpar" click="lblMessage.text = '';" />
+					<s:Button label="Enviar" click="enviar_clickHandler(event)" />
+				</s:HGroup>
+			</components1:Pod>
+		</components:secondElements>
+		
+	</components:PodManager>
+	
+</s:NavigatorContent>

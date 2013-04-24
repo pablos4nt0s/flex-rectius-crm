@@ -1,0 +1,184 @@
+/* CSS file */
+@namespace s "library://ns.adobe.com/flex/spark";
+@namespace mx "library://ns.adobe.com/flex/mx";
+@namespace supportClasses "spark.components.supportClasses.*";
+@namespace dataGridClasses "mx.controls.dataGridClasses.*";
+@namespace itemrenderer "br.com.rectius.crm.view.components.itemrenderer.*";
+@namespace skins "br.com.rectius.crm.assets.skins.*";
+@namespace notificator "br.com.rectius.library.notificator.*";
+
+@font-face { 
+	src: url("br/com/rectius/crm/assets/fonts/MankSans.ttf"); 
+	fontFamily: myFontFamilyLightCCF;
+	fontWeight: normal;
+	embedAsCFF: true; 
+}
+
+@font-face { 
+	src: url("br/com/rectius/crm/assets/fonts/MankSans-Medium.ttf"); 
+	fontFamily: myFontFamilyCCF;
+	fontWeight: normal;
+	embedAsCFF: true; 
+}
+
+@font-face { 
+	src: url("br/com/rectius/crm/assets/fonts/MankSans-Medium.ttf"); 
+	fontFamily: myFontFamilyCCF;
+	fontWeight: bold;
+	embedAsCFF: true; 
+}
+
+@font-face { 
+	src: url("br/com/rectius/crm/assets/fonts/MankSans-Oblique.ttf"); 
+	fontFamily: myFontFamilyCCF;
+	fontStyle: italic;
+	embedAsCFF: true; 
+}
+
+s|Application
+{
+	backgroundColor: #E9E9E9;
+}
+
+s|Label {
+	fontFamily: "myFontFamilyLightCCF";	
+}
+
+s|TextInput {
+	color: #999999;
+	fontSize: 14;
+	contentBackgroundColor: #ffffff;
+	focusColor: #ffffff;
+}
+
+notificator|Notificator s|Label
+{
+	fontFamily: "myFontFamilyCCF";
+}
+
+/*s|CheckBox {
+	fontFamily: "myFontFamilyCCF";
+	fontSize: 12;
+	color: #666666;
+}*/
+
+s|ButtonBar#menuBar
+{
+	skinClass: ClassReference("br.com.rectius.crm.assets.skins.CustomButtonBar");
+}
+
+s|ButtonBar#menuChart
+{
+	skinClass: ClassReference("br.com.rectius.crm.assets.skins.LinkButtonBar");
+}
+
+s|ButtonBarButton
+{
+	fontSize: 12;
+}
+
+s|DataGrid
+{
+	fontFamily: "myFontFamilyCCF";
+	contentBackgroundColor: #F3F3F3;
+	borderVisible: false;
+	selectionColor: #CCCCCC;
+	rollOverColor: #C0C0C0;
+	caretColor: #f3f3f3;
+	color: #585858;
+	
+}
+
+s|Form s|FormItem
+{
+	skinClass: ClassReference("br.com.rectius.crm.assets.skins.CustomFormItem");
+	color: #585858;
+	fontSize: 15;
+}
+
+s|GridColumnHeaderGroup
+{
+	fontFamily: "myFontFamilyCCF";
+	fontSize: 16;
+	fontStyle: italic;
+}
+
+.menu
+{
+	fontFamily: "myFontFamilyCCF";
+	fontSize: 18;
+	fontWeight: bold;
+	color: #CCCCCC;
+}
+
+.actionButton
+{
+	skinClass: ClassReference("br.com.rectius.crm.assets.skins.ActionButton");
+	fontSize: 16;
+	color: #F2F2F2;	
+}
+
+.cancelButton
+{
+	skinClass: ClassReference("br.com.rectius.crm.assets.skins.CancelButton");
+	fontSize: 16;
+	color: #F2F2F2;	
+}
+
+
+/* SECOES */
+
+.tituloSecao 
+{
+	fontFamily: "myFontFamilyCCF";
+	color: #585858;
+	fontSize: 26;
+	fontWeight: bold;
+}
+
+.descricaoSecao 
+{
+	fontFamily: "myFontFamilyCCF";
+	color: #585858;
+	fontSize: 14;
+	fontWeight: normal;
+}
+
+/* CHART */
+.myAxisVerticalStyle {
+	color: #585858;
+	minorTickPlacement:none;	
+	tickPlacement:none;
+	showLine: false;	
+}
+
+.myAxisHorizontalStyle {
+	color: #585858;
+	minorTickPlacement:none;	
+	tickPlacement:none;
+	showLine: false;
+}
+
+/* MENU */
+.menuResumoTitulo
+{
+	fontSize: 14;
+}
+
+.menuResumoValor
+{
+	fontFamily: "myFontFamilyCCF";
+	color: #585858;
+	fontSize: 26;
+	fontWeight: bold;
+}
+
+.verde
+{
+	color: #339933;
+}
+
+.vermelho
+{
+	color: #880000;
+}

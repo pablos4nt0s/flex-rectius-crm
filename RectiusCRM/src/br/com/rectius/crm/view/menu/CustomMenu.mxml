@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		  xmlns:s="library://ns.adobe.com/flex/spark" 
+		  xmlns:mx="library://ns.adobe.com/flex/mx" 
+		  xmlns:domain="br.com.rectius.crm.model.domain.*">
+
+	<fx:Script>
+		<![CDATA[
+			import br.com.rectius.crm.model.domain.Menu;
+			import br.com.rectius.crm.model.presentation.MainPresentationModel;
+			
+			import mx.collections.ArrayCollection;
+			
+			[Bindable]
+			[Inject]
+			public var model:MainPresentationModel;
+			
+		]]>
+	</fx:Script>
+	
+	<s:DataGroup width="100%" height="100%" dataProvider="{model.arrMenu}"
+				 itemRenderer="br.com.rectius.crm.view.components.itemrenderer.MenuItemRenderer">
+		<s:layout>
+			<s:HorizontalLayout gap="20" verticalAlign="middle" />
+		</s:layout>
+	</s:DataGroup>
+	
+	<s:Spacer width="40" />
+	
+	<s:Label styleName="menu" 
+			 text="Sair" 
+			 click="model.logout();"
+			 useHandCursor="true"
+			 buttonMode="true" />
+	
+	<s:Spacer width="20" />
+		
+</s:HGroup>

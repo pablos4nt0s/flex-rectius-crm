@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx"
+				autoDrawBackground="false" 
+				buttonMode="true" useHandCursor="true"
+				width="100%" height="100%"
+				click="clickHandler(event)">
+	
+	<fx:Script>
+		<![CDATA[
+			import br.com.rectius.crm.model.domain.Menu;
+			import br.com.rectius.crm.model.presentation.MainPresentationModel;
+			
+			
+			[Bindable]
+			[Inject]
+			public var model:MainPresentationModel;
+			
+			
+			[Dispatcher]
+			public var dispatcher:IEventDispatcher;
+			
+			
+			override public function set data(value:Object):void
+			{
+				super.data = value;
+			}
+			
+			protected function clickHandler(event:MouseEvent):void
+			{
+				model.changeMenuSelection(data as Menu);
+			}
+		]]>
+	</fx:Script>
+	
+	
+	<s:Label styleName="menu" text="{data.nome}" 
+			 verticalCenter="0" horizontalCenter="0" />
+	
+	<s:Group width="100%" height="5" hideEffect="Fade" showEffect="Fade" 
+			 visible="{data.selecionado}" bottom="0" horizontalCenter="0">
+		<s:Rect width="100%" height="100%" >
+			<s:fill>
+				<s:SolidColor color="#CC0000" />
+			</s:fill>
+		</s:Rect>
+	</s:Group>
+		
+</s:ItemRenderer>
